@@ -12,6 +12,7 @@ resolution-markers = [
 
 [manifest]
 members = [
+    "agent-dev",
     "agent-runtime-types",
     "agui-agent",
     "chat-api-fastapi",
@@ -53,6 +54,27 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/54/24/2660df84aa6d50b6006b1c6cb1c437e628f05ce632f8a5170bb2322400ec/ag_ui_strands-0.2.4.tar.gz", hash = "sha256:abb986adc71ddb5c61b0ab683f6c26eca09ed24d816ae6422d2480e067abaa5f", size = 183838, upload-time = "2026-08-04T06:27:10.509Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fa/ac/82a31ea35031bd89fee18135e5860df3d6b4d59aee1f7ed2a84a6ec0ae7b/ag_ui_strands-0.2.4-py3-none-any.whl", hash = "sha256:c09ae3e7883a416168f63b1b5cc6205798ab09c938678613598bb99d2b762668", size = 44634, upload-time = "2026-08-04T06:27:09.117Z" },
+]
+
+[[package]]
+name = "agent-dev"
+version = "0.1.0"
+source = { editable = "utilities/agent-dev" }
+
+[package.dev-dependencies]
+dev = [
+    { name = "pyright" },
+    { name = "pytest" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "pyright", specifier = ">=1.1.411" },
+    { name = "pytest", specifier = ">=9.1.1" },
+    { name = "ruff", specifier = ">=0.16.2" },
 ]
 
 [[package]]

@@ -2,10 +2,14 @@
 
 set -e
 
-PROJECT_DIR="$(dirname "${BASH_SOURCE[0]}")/.."
+PROJECT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 ${PROJECT_DIR}/../../scripts/check-dev-aws-credentials.sh
 
 cd "$PROJECT_DIR/../../cdk"
 
-pnpm exec cdk deploy AguiAgentStack "$@"
+# Record the stack outputs for the agent-dev command to read, instead of
+# it querying CloudFormation.
+pnpm exec cdk deploy AguiAgentStack \
+  --outputs-file "$PROJECT_DIR/agentcore/cdk-outputs.json" \
+  "$@"

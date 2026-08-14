@@ -12,6 +12,7 @@ members = [
     "services/example-agent",
     "services/agui-agent",
     "libs/python/*",
+    "utilities/agent-dev",
 ]
 
 [tool.uv.sources]
