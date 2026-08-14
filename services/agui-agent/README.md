@@ -4,12 +4,14 @@ A quick example of an AgentCore agent that outputs AG-UI events.
 
 ## Usage
 
-Prior to running this you will need to deploy dependent infrastructure to AWS, this can be done with:
+Deploy the agent's infrastructure with:
 
 ```
 ./scripts/cdk-deploy.sh
 ```
 
-### Local
+Then run it locally or invoke the deployed runtime with the repo-wide agent
+dev tooling — see [utilities/agent-dev](../../utilities/agent-dev/README.md).
 
-For the time being, this isn't a runnable agent locally.
+The Inspector renders this agent's replies as streaming text, because it
+outputs AG-UI events.
