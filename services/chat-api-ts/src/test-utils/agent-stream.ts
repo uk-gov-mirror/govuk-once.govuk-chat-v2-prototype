@@ -5,6 +5,7 @@ import { Writable } from 'node:stream';
 
 export const send = vi.fn();
 export const encoder = new EventEncoder();
+export const reportError = vi.fn();
 
 export const invokeAgentRuntimeCommand = vi.fn().mockImplementation(function (
   input: unknown,

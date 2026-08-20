@@ -11,6 +11,7 @@ import {
   expectJsonHttpResponse,
   aguiEventStream,
   createFailingStream,
+  reportError,
   type ResponseStream,
 } from '../../test-utils/agent-stream.ts';
 
@@ -131,6 +132,10 @@ describe('handler', () => {
       expectJsonHttpResponse(responseStream, 400, {
         error: 'Invalid JSON in request body',
       });
+      expect(reportError).toHaveBeenCalledWith(
+        'Failed to parse request body as JSON',
+        expect.any(SyntaxError),
+      );
     });
   });
 
@@ -144,6 +149,10 @@ describe('handler', () => {
         responseStream,
         422,
         fieldErrorResponse(['threadId', 'messages']),
+      );
+      expect(reportError).toHaveBeenCalledWith(
+        'Request body failed schema validation',
+        expect.anything(),
       );
     });
 
@@ -237,7 +246,8 @@ describe('handler', () => {
     describe('pre-stream failures', () => {
       it('returns a 500 JSON error when runtime client invocation fails before opening stream', async () => {
         const responseStream = testEnv.responseStream;
-        send.mockRejectedValueOnce(new Error('Error from agent runtime'));
+        const runtimeError = new Error('Error from agent runtime');
+        send.mockRejectedValueOnce(runtimeError);
 
         await testEnv.handler(
           makeEvent({
@@ -252,6 +262,11 @@ describe('handler', () => {
         expectJsonHttpResponse(responseStream, 500, {
           error: 'Agent invocation error',
         });
+        expect(reportError).toHaveBeenCalledWith(
+          'Agent runtime invocation failed',
+          runtimeError,
+          { threadId: VALID_THREAD_ID, runId: VALID_RUN_ID },
+        );
       });
 
       it('returns a 500 JSON error when no response body is returned from agent runtime', async () => {
@@ -271,6 +286,11 @@ describe('handler', () => {
         expectJsonHttpResponse(responseStream, 500, {
           error: 'Agent invocation error',
         });
+        expect(reportError).toHaveBeenCalledWith(
+          'Agent runtime returned no response body',
+          undefined,
+          { threadId: VALID_THREAD_ID, runId: VALID_RUN_ID },
+        );
       });
     });
 

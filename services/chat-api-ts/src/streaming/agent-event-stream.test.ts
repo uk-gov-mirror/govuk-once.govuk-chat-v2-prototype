@@ -60,6 +60,11 @@ describe('relayAgentEventStream', () => {
       encoder.encode(expectedStartEvent) + encoder.encode(expectedErrorEvent),
     );
     expect(destination.end).toHaveBeenCalledOnce();
+    expect(reportError).toHaveBeenCalledWith(
+      'Agent event stream relay failed',
+      new Error('Stream failure'),
+      { threadId: THREAD_ID, runId: RUN_ID },
+    );
   });
 
   it('does not duplicate RUN_STARTED when the source fails after RUN_STARTED was already relayed', async () => {
@@ -86,5 +91,10 @@ describe('relayAgentEventStream', () => {
       encoder.encode(runStartedEvent) + encoder.encode(expectedErrorEvent),
     );
     expect(destination.end).toHaveBeenCalledOnce();
+    expect(reportError).toHaveBeenCalledWith(
+      'Agent event stream relay failed',
+      new Error('Stream failure'),
+      { threadId: THREAD_ID, runId: RUN_ID },
+    );
   });
 });
